@@ -8,9 +8,9 @@ module.exports.IndexAPI = (app) => {
 
     router.get("/", (req, res) => {
         const menu = {
-            products: `https://${req.headers.host}/api/products`,
-            users: `https://${req.headers.host}/api/users`,
-            sales: `https://${req.headers.host}/api/sales`
+            products: `http://${req.headers.host}/api/products`,
+            users: `http://${req.headers.host}/api/users`,
+            sales: `http://${req.headers.host}/api/sales`
         }
         Response.success(res, 200, "Welcome to the API", menu);
     });
