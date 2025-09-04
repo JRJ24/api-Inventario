@@ -1,0 +1,41 @@
+const {ObjectId} = require("mongodb");
+const {Database} = require("../database/index");
+
+const COLLECTION = "users";
+
+const getAll = async () => {
+    const collection = await Database(COLLECTION);
+    return await collection.find().toArray();
+}
+
+const getById = async (id) => {
+    const collection = await Database(COLLECTION);
+    return collection.findOne({_id: new ObjectId(id)});
+}   
+
+const Create = async (user) => {
+    const collection = await Database(COLLECTION);
+    let result = await collection.insertOne(user);
+    return result.insertedId;
+}
+
+const updateUser = async (id, user) => {
+    const collection = await Database(COLLECTION);
+    let result = await collection.updateOne({_id: new ObjectId(id)}, {$set: user});
+    return result.modifiedCount;
+}
+
+const deleteUser = async (id) => {
+    const collection = await Database(COLLECTION);
+    let result = await collection.deleteOne({_id: new ObjectId(id)});
+    return result.deletedCount;
+}
+
+
+module.exports.usersServices = {
+    getAll,
+    getById,
+    Create,
+    updateUser,
+    deleteUser
+}
