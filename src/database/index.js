@@ -9,7 +9,13 @@ module.exports.Database = (collection) =>
     new Promise( async(res, rej) => {
     try{
         if(!connection){
-            const client = new MongoClient(config.dbUri);
+            const client = new MongoClient(config.dbUri, {
+                tls: true,
+                tlsAllowInvalidCertificates: false,
+                tlsAllowInvalidHostnames: false,
+                serverSelectionTimeoutMS: 5000,
+                connectTimeoutMS: 10000,
+            });
             connection = await client.connect();
             debug("Database connected");
         }
