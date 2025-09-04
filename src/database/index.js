@@ -9,10 +9,19 @@ module.exports.Database = (collection) =>
     new Promise( async(res, rej) => {
     try{
         if(!connection){
-            connection = await mongoose.connect(config.dbUri);
+            await mongoose.connect(config.dbUri);
+            connection = mongoose.connection;
             debug("Database connected");
         }
-        const db = mongoose.connection.db;
+        
+        // Wait for connection to be ready
+        if (connection.readyState !== 1) {
+            await new Promise((resolve) => {
+                connection.once('open', resolve);
+            });
+        }
+        
+        const db = connection.db;
         res(db.collection(collection));
 
     }catch(error){
