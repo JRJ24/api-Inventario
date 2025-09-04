@@ -9,6 +9,7 @@ module.exports.Response = {
     },
     error: (res, error = null) => {
         const {statusCode, message} =  error ? error : new createError.InternalServerError();
-        res.status(statusCode).json({message});
+        const status = statusCode || 500;
+        res.status(status).json({message});
     }
 }
